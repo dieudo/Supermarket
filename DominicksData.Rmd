@@ -1,0 +1,147 @@
+---
+title: "Dominick's Data"
+author: "Dieudonne,Hiroki,Manoj"
+date: "3/9/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#1.Shadata
+
+```{r,warning=FALSE,message=FALSE}
+library(sas7bdat)
+library(knitr)
+library(pander)
+#library(sqldf)
+library(dplyr)
+X=read.sas7bdat("~/Downloads/shadata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "shadata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X))
+#sha1992<- read.csv.sql("shadata.csv",sql = "select * from file where Year = '1992'")
+sha1992=filter(X,Year=='1992')
+TotalSales1992=sum(sha1992$sales)
+kable(paste("Total Sales in 1992 $",TotalSales1992))
+TotalQuantitySold1992=sum(sha1992$quantity_sold)
+kable(paste("Total Quantity sold in 1992 is ",TotalQuantitySold1992))
+```
+
+###First Quarter of 1992
+
+```{r,warning=FALSE,message=FALSE}
+sha1992_Quarter1=filter(X,Year=='1992',Quarter=='1')
+TotalSales1992_Quarter1=sum(sha1992_Quarter1$sales)
+kable(paste("Total Sales in 1992 and quarter1 $",TotalSales1992_Quarter1))
+TotalQuantitySold1992_Quarter1=sum(sha1992_Quarter1$quantity_sold)
+kable(paste("Total Quantity sold in 1992 and quater 1 is ",TotalQuantitySold1992_Quarter1))
+```
+
+###Second Quarter of 1992
+
+```{r,warning=FALSE,message=FALSE}
+sha1992_Quarter2=filter(X,Year=='1992',Quarter=='2')
+TotalSales1992_Quarter2=sum(sha1992_Quarter2$sales)
+kable(paste("Total Sales in 1992 and quarter 2 $",TotalSales1992_Quarter2))
+TotalQuantitySold1992_Quarter2=sum(sha1992_Quarter1$quantity_sold)
+kable(paste("Total Quantity sold in 1992 and quater 2 is ",TotalQuantitySold1992_Quarter2))
+```
+
+
+###Third Quarter of 1992
+
+```{r,warning=FALSE,message=FALSE}
+sha1992_Quarter3=filter(X,Year=='1992',Quarter=='3')
+TotalSales1992_Quarter3=sum(sha1992_Quarter3$sales)
+kable(paste("Total Sales in 1992 and quarter 3 $",TotalSales1992_Quarter3))
+TotalQuantitySold1992_Quarter3=sum(sha1992_Quarter3$quantity_sold)
+kable(paste("Total Quantity sold in 1992 and quater 3 is ",TotalQuantitySold1992_Quarter3))
+```
+
+###Fourth Quarter of 1992
+
+```{r,warning=FALSE,message=FALSE}
+sha1992_Quarter4=filter(X,Year=='1992',Quarter=='4')
+TotalSales1992_Quarter4=sum(sha1992_Quarter4$sales)
+kable(paste("Total Sales in 1992 and quarter 4 $",TotalSales1992_Quarter4))
+TotalQuantitySold1992_Quarter4=sum(sha1992_Quarter4$quantity_sold)
+kable(paste("Total Quantity sold in 1992 and quater 4 is ",TotalQuantitySold1992_Quarter4))
+```
+
+
+###Visualization of sales
+
+```{r,warning=FALSE,message=FALSE}
+Sales=c(TotalSales1992_Quarter1,TotalSales1992_Quarter2,TotalSales1992_Quarter3,TotalSales1992_Quarter4)
+names(Sales)=c("Fisrt Quarter","Second Quarter","Third Quarter","Fourth Quarter")
+barplot(Sales,col="blue",main="Sales by quarter for 1992")
+pie(Sales)
+```
+
+
+###Visualization of Quantity Sold
+
+```{r,warning=FALSE,message=FALSE}
+Quantity=c(TotalQuantitySold1992_Quarter1,TotalQuantitySold1992_Quarter2,TotalQuantitySold1992_Quarter3,TotalQuantitySold1992_Quarter4)
+names(Quantity)=c("Fisrt Quarter","Second Quarter","Third Quarter","Fourth Quarter")
+barplot(Quantity,col="green",main="Quantity sold by quarter in 1992")
+pie(Quantity)
+```
+
+
+#2. lnddata
+
+```{r,warning=FALSE,message=FALSE}
+X=read.sas7bdat("~/Downloads/lnddata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "lnddata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X))
+```
+
+
+#3. fsfdata
+
+```{r,warning=FALSE,message=FALSE}
+X=read.sas7bdat("~/Downloads/fsfdata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "fsfdata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X)) Just to see the type of columns
+```
+
+
+#4. frjdata
+
+```{r,warning=FALSE,message=FALSE}
+X=read.sas7bdat("~/Downloads/frjdata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "frjdata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X))
+```
+
+
+#5. bjcdata
+
+```{r,warning=FALSE,message=FALSE}
+X=read.sas7bdat("~/Downloads/bjcdata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "bjcdata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X))
+```
+
+#6. berdata
+
+```{r,warning=FALSE,message=FALSE}
+X=read.sas7bdat("~/Downloads/berdata.sas7bdat",debug=TRUE)
+#X
+#write.csv(X, file = "berdata.csv") #Writing into an excel file for easy reading 
+pander(head(X,5))
+#kable(str(X))
+```
+
