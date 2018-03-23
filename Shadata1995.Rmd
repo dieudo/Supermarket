@@ -1,0 +1,88 @@
+---
+title: "Shadata1995"
+author: "Dieudonne Ouedraogo"
+date: "3/15/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,warning=FALSE,message=FALSE}
+library(sas7bdat)
+library(knitr)
+library(pander)
+#library(sqldf)
+library(dplyr)
+X=read.sas7bdat("~/Downloads/shadata.sas7bdat",debug=TRUE)
+#pander(head(X,5))
+#sha1995=filter(X,Year=='1995')
+#kable(head(sha1995,15))
+#kable(paste("number of row",nrow(sha1995)))
+#pander(head(sha1995))
+shaBestUpc=filter(X,UPC=='3700000089')
+shadata <- read.csv("~/shadata.csv")
+#shaBestUpc
+plot(data=shaBestUpc,price~BonusBuy)
+plot(data=shaBestUpc,price~SimplePriceReduction)
+plot(data=shaBestUpc,price~Coupon)
+#Coupon has nothing to do with this product
+fit=lm(data = shaBestUpc,price~SimplePriceReduction+BonusBuy)
+fit
+#plot(fit)
+
+byUPC<-shadata%>%group_by(UPC,WEEK)
+UPC=summarize(byUPC,count=n(),AvgPrice= mean(price, na.rm = T),AvgBonus= mean(BonusBuy, na.rm=T),AvgSimplePrice=mean(SimplePriceReduction,na.rm=T),AvgCoupon=mean(Coupon,na.rm = T))
+#write.csv(UPC,file='UPC_WEEK.csv')
+#nrow(UPC)
+
+byUPC<-shadata%>%group_by(UPC,WEEK)
+UPC=summarize(byUPC,count=n(),AvgSales= mean(sales, na.rm = T),AvgPrice= mean(price, na.rm = T),AvgBonus= mean(BonusBuy, na.rm=T),AvgSimplePrice=mean(SimplePriceReduction,na.rm=T),AvgCoupon=mean(Coupon,na.rm = T))
+#write.csv(UPC,file='UPC_WEEK.csv')
+nrow(UPC)
+
+kable(head(UPC,10))
+plot(UPC$AvgPrice,UPC$AvgSales,col="purple",main="Avg Price versus Sales")
+
+
+kable(head(UPC,10))
+plot(UPC$AvgSimplePrice,UPC$AvgPrice,col="red",main="Avg Price versus Reduction")
+plot(UPC$AvgBonus,UPC$AvgPrice,col="blue",main="Avg Price versus avg Bonus ")
+```
+
+
+# By quarter and year
+
+```{r}
+byUPC<-shadata%>%group_by(UPC,Quarter,Year)
+UPC=summarize(byUPC,count=n(),AvgPrice= mean(price, na.rm = T),AvgBonus= mean(BonusBuy, na.rm =T),AvgSimplePrice=mean(SimplePriceReduction,na.rm=T),AvgCoupon=mean(Coupon,na.rm = T))
+write.csv(UPC,file='UPC_Quarter_Year.csv')
+nrow(UPC)
+#UPC<- summarize(byUPC, count = n(), AvgSales = mean(sales, na.rm = F),TotalSales=sum(sales, na.rm = F), AvgQuant = mean(quantity_sold,na.rm = F), TotalQuant = sum(quantity_sold,na.rm = F))
+kable(head(UPC,10))
+plot(UPC$AvgSimplePrice,UPC$AvgPrice,col="Red",main="Avg Price versus  Simple Reduction")
+plot(UPC$AvgBonus,UPC$AvgPrice,col="blue",main="Avg Price versus avg Bonus ")
+
+```
+
+##By year
+
+
+
+```{r}
+
+byUPC<-shadata%>%group_by(UPC,Year)
+UPC=summarize(byUPC,count=n(),AvgPrice= mean(price, na.rm = T),AvgBonus= mean(BonusBuy, na.rm = T),AvgSimplePrice=mean(SimplePriceReduction,na.rm=T),AvgCoupon=mean(Coupon,na.rm = T))
+
+#UPC<- summarize(byUPC, count = n(), AvgSales = mean(sales, na.rm = F),TotalSales=sum(sales, na.rm = F), AvgQuant = mean(quantity_sold,na.rm = F), TotalQuant = sum(quantity_sold,na.rm = F))
+kable(head(UPC,10))
+plot(UPC$AvgSimplePrice,UPC$AvgPrice,col="Red",main="Avg Price versus simple Reduction")
+#write.csv(UPC,file='UPC_Year.csv')
+
+plot(UPC$AvgBonus,UPC$AvgPrice,col="blue",main="Avg Price versus avg Bonus ")
+#nrow(UPC)
+
+plot(UPC$AvgCoupon,UPC$AvgPrice,col="green",main="Avg Price versus Coupon ")
+```
